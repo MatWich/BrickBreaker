@@ -1,4 +1,3 @@
-from PIL.ImageChops import screen
 import pygame
 from config import *
 

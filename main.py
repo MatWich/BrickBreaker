@@ -1,9 +1,9 @@
-from classes.game import Game
+from classes.game.game import Game
 
-def main():
+def play():
     game = Game()
     game.setUp()
     game.mainloop()
 
 if __name__ == "__main__":
-    main()
+    play()

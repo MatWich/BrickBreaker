@@ -1,9 +1,10 @@
 import pygame
-from classes.paddle import Paddle
-from classes.ball import Ball
-from classes.block import Block 
+from classes.game.paddle import Paddle
+from classes.game.ball import Ball
+from classes.game.block import Block 
 from config import *
 pygame.init()
+
 class Game:
     def __init__(self):
         self.screen = pygame.display.set_mode(SCREEN_SIZE)
@@ -72,8 +73,10 @@ class Game:
         # for blocks
         for index, block in enumerate(self.blocks):
             if pygame.sprite.collide_mask(self.ball, block):
-                self.ball.movementDirs[0] -= self.paddle.movementDirs[0]
+                '''well it was actually fun with this mistake'''
+              #  self.ball.movementDirs[0] -= self.paddle.movementDirs[0]
                 self.ball.movementDirs[1] = -1 * self.ball.movementDirs[1]
+                self.ball.movementDirs[0] = -1 * self.ball.movementDirs[0]
                 self.blocks.remove(block)
                 self.score += 1
 
