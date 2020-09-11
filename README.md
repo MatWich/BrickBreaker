@@ -7,5 +7,5 @@
 - [x] blocks
 - [x] collision block ball
 - [ ] menu 
-- [ ] score
+- [x] score
  

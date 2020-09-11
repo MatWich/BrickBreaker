@@ -3,7 +3,7 @@ from classes.paddle import Paddle
 from classes.ball import Ball
 from classes.block import Block 
 from config import *
-
+pygame.init()
 class Game:
     def __init__(self):
         self.screen = pygame.display.set_mode(SCREEN_SIZE)
@@ -11,7 +11,10 @@ class Game:
         self.clock = pygame.time.Clock()
         self.run = True         # if False game ends
         self.blocks = []
-
+        self.score = 0
+        self.font = pygame.font.SysFont("comicsans", 30)
+        
+        
     def setUp(self):
         # game objs
         self.paddle = Paddle(WIDTH - int(WIDTH/2) - 50, HEIGHT - int(HEIGHT/4), int(WIDTH*60/400), int(HEIGHT/60), BLUE)
@@ -25,7 +28,6 @@ class Game:
                 self.blocks.append(Block(x, BLOCK_HEIGHT * (y + 1) + 2, int(WIDTH*35/400), int(HEIGHT*22/400), GREEN))
         
 
-
         self.screen.fill(WHITE)
         pygame.display.update()
        # print("umm hello?")
@@ -34,6 +36,7 @@ class Game:
         while self.run:
             self.events()
             self.screen.fill(WHITE)
+            self.drawScore()
             self.paddle.update(self.screen)
             for block in self.blocks:
                 block.draw(self.screen)
@@ -72,6 +75,7 @@ class Game:
                 self.ball.movementDirs[0] -= self.paddle.movementDirs[0]
                 self.ball.movementDirs[1] = -1 * self.ball.movementDirs[1]
                 self.blocks.remove(block)
+                self.score += 1
 
 
 
@@ -81,4 +85,8 @@ class Game:
         self.collisionDetection()  
         pygame.display.update()
                
+    def drawScore(self):
+        self.scoreLabel = self.font.render(f"Score: {self.score}", 1, BLACK)
+        self.screen.blit(self.scoreLabel, (WIDTH- self.scoreLabel.get_width() - 10, 10))
+
             
