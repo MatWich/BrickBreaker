@@ -26,8 +26,7 @@ class Game:
             self.ball.update(self.screen)
 
 
-    def events(self):
-        self.clock.tick(FPS)
+    def controls(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.run = False
@@ -47,6 +46,16 @@ class Game:
                     self.paddle.movementDirs[0] = 0
                 if event.key == pygame.K_UP or event.key == pygame.K_w or event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     self.paddle.movementDirs[1] = 0
+    
+    def collisionDetection(self):
+        if pygame.sprite.collide_mask(self.paddle, self.ball):
+            self.ball.movementDirs[0] -= self.paddle.movementDirs[0]
+            self.ball.movementDirs[1] = -1 * self.ball.movementDirs[1]  
+
+    def events(self):
+        self.clock.tick(FPS)
+        self.controls()
+        self.collisionDetection()  
         pygame.display.update()
                
             
