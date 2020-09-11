@@ -1,7 +1,6 @@
-from classes.paddle import Paddle
-from tkinter import Pack
 import pygame
 from classes.paddle import Paddle
+from classes.ball import Ball
 from config import *
 
 class Game:
@@ -14,7 +13,7 @@ class Game:
     def setUp(self):
         # game objs
         self.paddle = Paddle(WIDTH - int(WIDTH/2) - 50, HEIGHT - int(HEIGHT/4), int(WIDTH*60/400), int(HEIGHT/60), BLUE)
-
+        self.ball = Ball(int(WIDTH/2), int(HEIGHT - HEIGHT/3), int(WIDTH/40),RED, [3, 4])
         self.screen.fill(WHITE)
         pygame.display.update()
        # print("umm hello?")
@@ -24,6 +23,7 @@ class Game:
             self.events()
             self.screen.fill(WHITE)
             self.paddle.update(self.screen)
+            self.ball.update(self.screen)
 
 
     def events(self):

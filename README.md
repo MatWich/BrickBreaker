@@ -1,5 +1,6 @@
 # BrickBreaker
 
+# TO DO:
 - [x] Paddle movement either vertical & horizontal
 - [ ] ball(and movement)
 - [ ] collision ball paddle
