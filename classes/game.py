@@ -1,6 +1,7 @@
 import pygame
 from classes.paddle import Paddle
 from classes.ball import Ball
+from classes.block import Block 
 from config import *
 
 class Game:
@@ -9,11 +10,22 @@ class Game:
         pygame.display.set_caption(TITLE)
         self.clock = pygame.time.Clock()
         self.run = True         # if False game ends
+        self.blocks = []
 
     def setUp(self):
         # game objs
         self.paddle = Paddle(WIDTH - int(WIDTH/2) - 50, HEIGHT - int(HEIGHT/4), int(WIDTH*60/400), int(HEIGHT/60), BLUE)
         self.ball = Ball(int(WIDTH/2), int(HEIGHT - HEIGHT/3), int(WIDTH/40),RED, [3, 4])
+        
+        BLOCK_WIDTH = int(WIDTH/8)
+        BLOCK_HEIGHT =int(BLOCK_WIDTH/2)
+        # BLOCKS
+        for y in range(3):
+            for x in range(10, int(WIDTH), int(BLOCK_WIDTH) + 10):
+                self.blocks.append(Block(x, BLOCK_HEIGHT * (y + 1) + 2, int(WIDTH*35/400), int(HEIGHT*22/400), GREEN))
+        
+
+
         self.screen.fill(WHITE)
         pygame.display.update()
        # print("umm hello?")
@@ -23,6 +35,8 @@ class Game:
             self.events()
             self.screen.fill(WHITE)
             self.paddle.update(self.screen)
+            for block in self.blocks:
+                block.draw(self.screen)
             self.ball.update(self.screen)
 
 
@@ -48,9 +62,18 @@ class Game:
                     self.paddle.movementDirs[1] = 0
     
     def collisionDetection(self):
+        # for paddle
         if pygame.sprite.collide_mask(self.paddle, self.ball):
             self.ball.movementDirs[0] -= self.paddle.movementDirs[0]
-            self.ball.movementDirs[1] = -1 * self.ball.movementDirs[1]  
+            self.ball.movementDirs[1] = -1 * self.ball.movementDirs[1]
+        # for blocks
+        for index, block in enumerate(self.blocks):
+            if pygame.sprite.collide_mask(self.ball, block):
+                self.ball.movementDirs[0] -= self.paddle.movementDirs[0]
+                self.ball.movementDirs[1] = -1 * self.ball.movementDirs[1]
+                self.blocks.remove(block)
+
+
 
     def events(self):
         self.clock.tick(FPS)
