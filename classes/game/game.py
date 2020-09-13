@@ -4,20 +4,17 @@ from classes.game.ball import Ball
 from classes.game.block import Block 
 from classes.gui.button import Button 
 from config import *
-pygame.init()
 
 class Game:
-    def __init__(self):
-        self.screen = pygame.display.set_mode(SCREEN_SIZE)
-        pygame.display.set_caption(TITLE)
+    def __init__(self, screen):
+        self.screen = screen
         self.clock = pygame.time.Clock()
         self.run = True         # if False game ends
         self.blocks = []
         self.score = 0
         self.font = pygame.font.SysFont("comicsans", 30)
-        self.menu = True
         
-        
+    # creating game objects    
     def setUp(self):
         # game objs
         self.paddle = Paddle(WIDTH - int(WIDTH/2) - 50, HEIGHT - int(HEIGHT/4), int(WIDTH*60/400), int(HEIGHT/60), BLUE)
@@ -34,14 +31,15 @@ class Game:
         pygame.display.update()
        # print("umm hello?")
 
+    # function to call after setUp
     def mainloop(self):
         while self.run:
             self.clock.tick(FPS)
-            self.controls()
+            self.events()
             pygame.display.update()
             
-
-    def game(self):
+    # Redrawing all objects in game
+    def update(self):
         self.screen.fill(WHITE)
         self.drawScore()
         self.paddle.update(self.screen)
@@ -49,55 +47,11 @@ class Game:
             block.draw(self.screen)
         self.ball.update(self.screen)
 
-    def createButtons(self):
-        self.startButton = Button(100, 100, 100, 100, GREEN, "START")
-
-    def displayMenu(self):
-        self.createButtons()
-        self.screen.fill(WHITE)
-        self.startButton.draw(self.screen)
-        pygame.display.update()
-
+    # for paddle movement 
     def controls(self):
-        pos = pygame.mouse.get_pos()
-        
-        if self.menu:
-            self.displayMenu()
 
         for event in pygame.event.get():
             # Menu buttons
-            if event.type == pygame.MOUSEMOTION:
-                if self.startButton.isOver(pos):
-                    self.startButton.highLight()
-                
-                #self.startButton.deHighLight()
-
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.startButton.isOver(pos):
-                    self.menu = False
-                    self.events()
-
-            pygame.display.update()
-
-    
-    def collisionDetection(self):
-        # for paddle
-        if pygame.sprite.collide_mask(self.paddle, self.ball):
-            self.ball.movementDirs[0] -= self.paddle.movementDirs[0]
-            self.ball.movementDirs[1] = -1 * self.ball.movementDirs[1]
-        # for blocks
-        for index, block in enumerate(self.blocks):
-            if pygame.sprite.collide_mask(self.ball, block):
-                '''well it was actually fun with this mistake'''
-              #  self.ball.movementDirs[0] -= self.paddle.movementDirs[0]
-                self.ball.movementDirs[1] = -1 * self.ball.movementDirs[1]
-                self.ball.movementDirs[0] = -1 * self.ball.movementDirs[0]
-                self.blocks.remove(block)
-                self.score += 1
-
-
-    def gameControls(self):
-        for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.run = False
             if event.type == pygame.KEYDOWN:
@@ -117,13 +71,31 @@ class Game:
                 if event.key == pygame.K_UP or event.key == pygame.K_w or event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     self.paddle.movementDirs[1] = 0
 
+            pygame.display.update()
+
+    
+    def collisionDetection(self):
+        # for paddle
+        if pygame.sprite.collide_mask(self.paddle, self.ball):
+            self.ball.movementDirs[0] -= self.paddle.movementDirs[0]
+            self.ball.movementDirs[1] = -1 * self.ball.movementDirs[1]
+        # for blocks
+        for block in self.blocks:
+            if pygame.sprite.collide_mask(self.ball, block):
+                '''well it was actually fun with this mistake'''
+              #  self.ball.movementDirs[0] -= self.paddle.movementDirs[0]
+                self.ball.movementDirs[1] = -1 * self.ball.movementDirs[1]
+                self.ball.movementDirs[0] = -1 * self.ball.movementDirs[0]
+                self.blocks.remove(block)
+                self.score += 1
+
+    # all stuff for game drawing & mechanicks        
     def events(self):
-        while self.run:
-            self.clock.tick(FPS)
-            self.game()
-            self.gameControls()
-            self.collisionDetection()
-            pygame.display.update()  
+        self.update()
+        self.controls()
+        self.collisionDetection()
+        self.drawScore()
+        pygame.display.update()  
 
                
     def drawScore(self):

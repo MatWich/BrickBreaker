@@ -6,6 +6,6 @@
 - [x] collision ball paddle
 - [x] blocks
 - [x] collision block ball
-- [ ] menu 
+- [x] menu 
 - [x] score
  

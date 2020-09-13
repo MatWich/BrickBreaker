@@ -1,11 +1,10 @@
-from classes.game.game import Game
+from classes.gui.menu import Menu
 import pygame
 pygame.init()
 
-def play():
-    game = Game()
-    game.setUp()
-    game.mainloop()
+def menu():
+    menu = Menu()
+    menu.drawMenu()
 
 if __name__ == "__main__":
-    play()
+    menu() 
