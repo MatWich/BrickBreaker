@@ -8,4 +8,6 @@
 - [x] collision block ball
 - [x] menu 
 - [x] score
+- [x] information about clearing the level 
+- [x] restarting 
  

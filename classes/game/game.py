@@ -3,6 +3,8 @@ from classes.game.paddle import Paddle
 from classes.game.ball import Ball
 from classes.game.block import Block 
 from classes.gui.button import Button 
+from tkinter import *
+from tkinter import messagebox
 from config import *
 
 class Game:
@@ -95,8 +97,21 @@ class Game:
         self.controls()
         self.collisionDetection()
         self.drawScore()
+        if self.isClear():
+            self.newLevel()
+
         pygame.display.update()  
 
+    def newLevel(self):
+        Tk().withdraw()  # it will hides normal tkinter window
+        messagebox.showinfo("level compleated", "you will now enter the nwxt one")
+        self.setUp()
+
+    # checking winning condition
+    def isClear(self):
+        if self.blocks == []:
+            return True
+        return False
                
     def drawScore(self):
         self.scoreLabel = self.font.render(f"Score: {self.score}", 1, BLACK)

@@ -8,6 +8,8 @@ class Menu:
         self.run = True
         self.screen = pygame.display.set_mode(SCREEN_SIZE)
         pygame.display.set_caption(TITLE)
+        ICON_IMG = pygame.image.load("imgs/Ikonka.png")
+        pygame.display.set_icon(ICON_IMG)
         self.clock = pygame.time.Clock()
         self.buttons = []
         self.font = pygame.font.SysFont("arial", 60)
