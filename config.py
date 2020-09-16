@@ -17,8 +17,13 @@ BLOCK_WIDTH = 100
 
 # Butoons 
 BTN_WIDTH, BTN_HEIGHT = 300, 50
-BTN_OFFSET = 30
+BTN_OFFSET = 20
 
 # Tops labels
 MENU_LABEL = "Brick Breaker Game"  
 CREDITS_LABEL = "Credits"
+CONTROLS_LABEL = "Controls"
+
+# Text for pages
+MOVEMENT_INFO = "Use WASD or arrow keys to move paddle"
+SOME_MORE_TEXT_TO_CONTOROLS = "It's pretty much it. Let's call it easter egg :)"

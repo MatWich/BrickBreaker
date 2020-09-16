@@ -13,17 +13,21 @@ class Menu:
         self.clock = pygame.time.Clock()
         self.buttons = []
         self.font = pygame.font.SysFont("arial", 60)
+        self.infoFont = pygame.font.SysFont("comicsans", 30)
 
     # Creating Menu buttons
     def setUp(self):
-        for y in range(0, 3):
-            self.startButton = Button(int(WIDTH/2) - int(BTN_WIDTH/2), int(HEIGHT/3) + 0 * (BTN_HEIGHT + BTN_OFFSET), BTN_WIDTH, BTN_HEIGHT, GREEN, "START")
-            self.creditsButton = Button(int(WIDTH/2) - int(BTN_WIDTH/2), int(HEIGHT/3) + 1 * (BTN_HEIGHT + BTN_OFFSET), BTN_WIDTH, BTN_HEIGHT, GREEN, "Credits")
-            self.quitButton = Button(int(WIDTH/2) - int(BTN_WIDTH/2), int(HEIGHT/3) + 2 * (BTN_HEIGHT + BTN_OFFSET), BTN_WIDTH, BTN_HEIGHT, GREEN, "QUIT")
+        for y in range(0, 4):
+            self.startButton = Button(int(WIDTH/2) - int(BTN_WIDTH/2), int(HEIGHT*100/400) + 0 * (BTN_HEIGHT + BTN_OFFSET), BTN_WIDTH, BTN_HEIGHT, GREEN, "START")
+            self.creditsButton = Button(int(WIDTH/2) - int(BTN_WIDTH/2), int(HEIGHT*100/400) + 1 * (BTN_HEIGHT + BTN_OFFSET), BTN_WIDTH, BTN_HEIGHT, GREEN, "Credits")
+            self.controlsButton = Button(int(WIDTH/2) - int(BTN_WIDTH/2), int(HEIGHT*100/400) + 2 * (BTN_HEIGHT + BTN_OFFSET), BTN_WIDTH, BTN_HEIGHT, GREEN, "Controls")
+            self.quitButton = Button(int(WIDTH/2) - int(BTN_WIDTH/2), int(HEIGHT*100/400) + 3 * (BTN_HEIGHT + BTN_OFFSET), BTN_WIDTH, BTN_HEIGHT, GREEN, "QUIT")
 
         self.buttons.append(self.startButton)
         self.buttons.append(self.quitButton)
         self.buttons.append(self.creditsButton)
+        self.buttons.append(self.controlsButton)
+
 
     # To start the game when exit go back to menu
     def playGame(self):
@@ -76,6 +80,8 @@ class Menu:
                 if self.creditsButton.isOver(pos):
                     self.credits()
             
+                if self.controlsButton.isOver(pos):
+                    self.controlsPage()
             # for button to highlight
             if event.type == pygame.MOUSEMOTION:
                 for button in self.buttons:
@@ -83,6 +89,28 @@ class Menu:
                         button.highLight()
                     else:
                         button.deHighLight()
+    
+    """Controls"""
+    def controlsPage(self):
+        while self.run:
+            self.clock.tick(FPS)
+            self.drawBg()
+            self.drawContorlsTops()
+            self.drawControlsPageContent()
+            self.creditsControl()       # "don't repeat yourself"
+            pygame.display.update()
+
+
+    def drawContorlsTops(self):
+        self.creditsTops = self.font.render(CONTROLS_LABEL, 1, BLACK)
+        self.screen.blit(self.creditsTops, (int(WIDTH/2) - int(self.topsLabel.get_width()/2) - 10, 10) )
+
+    def drawControlsPageContent(self):
+        infoBar = self.infoFont.render(MOVEMENT_INFO, 1, BLACK)
+        infoBar2 = self.infoFont.render(SOME_MORE_TEXT_TO_CONTOROLS, 1, BLACK)
+        self.screen.blit(infoBar, (int(WIDTH/2) - int(infoBar.get_width()/2) - 50, int(HEIGHT*100/400)) )
+        self.screen.blit(infoBar2, (int(WIDTH/2) - int(infoBar2.get_width()/2) - 50, int(HEIGHT*150/400)) )
+        
     
     """Credits"""
     # Credits Menu Options
