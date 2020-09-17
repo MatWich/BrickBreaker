@@ -13,6 +13,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.run = True         # if False game ends
         self.blocks = []
+        self.lives = 5
         self.score = 0
         self.font = pygame.font.SysFont("comicsans", 30)
         
@@ -97,6 +98,9 @@ class Game:
         self.controls()
         self.collisionDetection()
         self.drawScore()
+        self.drawLives()
+        self.checkIfDecreaseLP()
+        self.checkLives()
         if self.isClear():
             self.newLevel()
 
@@ -104,7 +108,8 @@ class Game:
 
     def newLevel(self):
         Tk().withdraw()  # it will hides normal tkinter window
-        messagebox.showinfo("level compleated", "you will now enter the nwxt one")
+        messagebox.showinfo("level compleated", "you will now enter the next one")
+        self.gainLife()
         self.setUp()
 
     # checking winning condition
@@ -112,6 +117,35 @@ class Game:
         if self.blocks == []:
             return True
         return False
+
+    # checking loosing condition
+    def checkLives(self):
+        if self.lives <= 0:
+            Tk().withdraw()
+            messagebox.showinfo("Out of lives", "You will do better next time :D\nBack to main menu")
+            self.run = False
+
+    def drawLives(self):
+        if self.lives < 2:
+            livesLabel = self.font.render(f"Lives: {self.lives}",1, RED)
+        else:
+            livesLabel = self.font.render(f"Lives: {self.lives}",1, BLACK)
+        
+        self.screen.blit(livesLabel, (livesLabel.get_width() - 65, 10))
+
+    # checking position of the ball 
+    def checkIfDecreaseLP(self):
+        if self.ball.rect.bottom >= HEIGHT:
+            self.looseLife()
+
+    # kinda creepy
+    def looseLife(self):
+        self.lives -= 1
+    
+    # if you complete tje lvl
+    def gainLife(self):
+        self.lives += 1
+
                
     def drawScore(self):
         self.scoreLabel = self.font.render(f"Score: {self.score}", 1, BLACK)

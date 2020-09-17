@@ -10,4 +10,7 @@
 - [x] score
 - [x] information about clearing the level 
 - [x] restarting 
+- [x] Lives and actually losing game
  
+ # Hidden rules 
+ If you clear the level you will gain additional LP
