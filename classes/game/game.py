@@ -2,7 +2,6 @@ import pygame
 from classes.game.paddle import Paddle
 from classes.game.ball import Ball
 from classes.game.block import Block 
-from classes.gui.button import Button 
 from tkinter import *
 from tkinter import messagebox
 from config import *
@@ -16,6 +15,7 @@ class Game:
         self.lives = 5
         self.score = 0
         self.font = pygame.font.SysFont("comicsans", 30)
+        self.dust = []
         
     # creating game objects    
     def setUp(self):

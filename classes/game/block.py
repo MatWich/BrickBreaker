@@ -1,4 +1,5 @@
 import pygame
+
 from config import *
 
 class Block:
@@ -12,7 +13,8 @@ class Block:
         self.rect.top = y
         self.color = color
 
+
     def draw(self, screen):
         screen.blit(self.image, self.rect)
     
-    
+

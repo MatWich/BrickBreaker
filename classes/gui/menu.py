@@ -2,6 +2,7 @@ import pygame
 from config import *
 from classes.gui.button import Button
 from classes.game.game import Game
+from classes.game.dust import Dust
 
 class Menu:
     def __init__(self):
@@ -14,6 +15,7 @@ class Menu:
         self.buttons = []
         self.font = pygame.font.SysFont("arial", 60)
         self.infoFont = pygame.font.SysFont("comicsans", 30)
+        self.dust = []
 
     # Creating Menu buttons
     def setUp(self):
@@ -54,6 +56,7 @@ class Menu:
             self.tops()
             self.drawButtons()
             self.controls()
+            self.drawDust()
             pygame.display.update()
 
     # Displaying All Buttons
@@ -71,6 +74,12 @@ class Menu:
 
             # On clicks for buttons
             if event.type == pygame.MOUSEBUTTONDOWN:
+                if pygame.mouse.get_pressed()[0]:
+                    d= Dust(pygame.mouse.get_pos())
+                    self.dust.append(d)
+
+                
+                # Buttons onclicks
                 if self.startButton.isOver(pos):
                     self.playGame()        
 
@@ -89,6 +98,8 @@ class Menu:
                         button.highLight()
                     else:
                         button.deHighLight()
+        
+
     
     """Controls"""
     def controlsPage(self):
@@ -133,3 +144,8 @@ class Menu:
             if event.type == pygame.QUIT:
                 self.drawMenu()
 
+    def drawDust(self):
+        for d in self.dust:
+            d.draw(self.screen)
+            d.update()
+        
