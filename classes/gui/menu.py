@@ -2,7 +2,7 @@ import pygame
 from config import *
 from classes.gui.button import Button
 from classes.game.game import Game
-from classes.game.dust import Dust
+from classes.effects.dust import Dust
 
 class Menu:
     def __init__(self):

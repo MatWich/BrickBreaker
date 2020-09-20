@@ -1,6 +1,6 @@
 import pygame
 from config import *
-from classes.game.particle import Particle
+from classes.effects.particle import Particle
 
 class Dust:
     def __init__(self, pos):

@@ -2,8 +2,10 @@ import pygame
 from classes.game.paddle import Paddle
 from classes.game.ball import Ball
 from classes.game.block import Block 
+from classes.effects.dust import Dust
 from tkinter import *
 from tkinter import messagebox
+
 from config import *
 
 class Game:
@@ -15,7 +17,10 @@ class Game:
         self.lives = 5
         self.score = 0
         self.font = pygame.font.SysFont("comicsans", 30)
-        self.dust = []
+        self.dust = []          # dust contains particles
+        self.dustSpread = False # tells program if it should draw particles
+        self.levelCounter = 1   
+        
         
     # creating game objects    
     def setUp(self):
@@ -29,6 +34,8 @@ class Game:
         for y in range(3):
             for x in range(10, int(WIDTH), int(BLOCK_WIDTH) + 10):
                 self.blocks.append(Block(x, BLOCK_HEIGHT * (y + 1) + 2, int(WIDTH*35/400), int(HEIGHT*22/400), GREEN))
+
+        self.explosion = Dust((self.ball.rect.left, self.ball.rect.top))
 
         self.screen.fill(WHITE)
         pygame.display.update()
@@ -50,6 +57,7 @@ class Game:
             block.draw(self.screen)
         self.ball.update(self.screen)
 
+    
     # for paddle movement 
     def controls(self):
 
@@ -90,6 +98,8 @@ class Game:
                 self.ball.movementDirs[1] = -1 * self.ball.movementDirs[1]
                 self.ball.movementDirs[0] = -1 * self.ball.movementDirs[0]
                 self.blocks.remove(block)
+                ballDestrPos = (self.ball.rect.left, self.ball.rect.top)
+                self.createDust(ballDestrPos)
                 self.score += 1
 
     # all stuff for game drawing & mechanicks        
@@ -99,6 +109,9 @@ class Game:
         self.collisionDetection()
         self.drawScore()
         self.drawLives()
+        if self.dustSpread == True:
+            self.drawBlockExplosion()
+
         self.checkIfDecreaseLP()
         self.checkLives()
         if self.isClear():
@@ -108,7 +121,8 @@ class Game:
 
     def newLevel(self):
         Tk().withdraw()  # it will hides normal tkinter window
-        messagebox.showinfo("level compleated", "you will now enter the next one")
+        self.levelCounter += 1
+        messagebox.showinfo("level compleated", f"you will now enter level {self.levelCounter} !!!")
         self.gainLife()
         self.setUp()
 
@@ -131,7 +145,7 @@ class Game:
         else:
             livesLabel = self.font.render(f"Lives: {self.lives}",1, BLACK)
         
-        self.screen.blit(livesLabel, (livesLabel.get_width() - 65, 10))
+        self.screen.blit(livesLabel, (int(livesLabel.get_width()/10), 10))
 
     # checking position of the ball 
     def checkIfDecreaseLP(self):
@@ -149,6 +163,23 @@ class Game:
                
     def drawScore(self):
         self.scoreLabel = self.font.render(f"Score: {self.score}", 1, BLACK)
-        self.screen.blit(self.scoreLabel, (WIDTH- self.scoreLabel.get_width() - 10, 10))
+        self.screen.blit(self.scoreLabel, (WIDTH - self.scoreLabel.get_width() - 10, 10))
+
+    def createDust(self, pos):
+        d= Dust(pos)
+        self.dust.append(d)
+        self.dustSpread = True
+        
+
+    def drawBlockExplosion(self):
+        
+        for d in self.dust:
+            d.draw(self.screen)
+            d.update()
+
+        if self.dust == []:
+            self.dustSpread = False
+
+
 
             

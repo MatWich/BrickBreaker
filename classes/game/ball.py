@@ -1,6 +1,5 @@
 import pygame
 from config import *
-from classes.game.dust import Dust 
 
 class Ball:
     def __init__(self, x, y, size, color, movementDirs=[0, 0]):
