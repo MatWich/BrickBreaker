@@ -20,8 +20,7 @@
 - [x] added High Scores with MongoDB
 
  # Screen Shots
-
- ![](images/GameScreen.jpg)
+<img src="images/GameScreen.jpg">
  ![](images/MenuScreen.jpg)
  ![](images/ScoreScreen.jpg)
 
