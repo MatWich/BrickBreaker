@@ -7,6 +7,7 @@ from tkinter import *
 from tkinter import messagebox
 
 from config import *
+pygame.mixer.init()
 
 class Game:
     def __init__(self, screen):
@@ -19,7 +20,9 @@ class Game:
         self.font = pygame.font.SysFont("comicsans", 30)
         self.dust = []          # dust contains particles
         self.dustSpread = False # tells program if it should draw particles
-        self.levelCounter = 1   
+        self.levelCounter = 1
+        # 0 Brick 1 Paddle
+        self.sounds = [pygame.mixer.Sound("music/Brickbreak1.wav"), pygame.mixer.Sound("music/PaddleBounce1.wav")]   
         
         
     # creating game objects    
@@ -90,6 +93,7 @@ class Game:
         if pygame.sprite.collide_mask(self.paddle, self.ball):
             self.ball.movementDirs[0] -= self.paddle.movementDirs[0]
             self.ball.movementDirs[1] = -1 * self.ball.movementDirs[1]
+            self.sounds[1].play()
         # for blocks
         for block in self.blocks:
             if pygame.sprite.collide_mask(self.ball, block):
@@ -98,6 +102,7 @@ class Game:
                 self.ball.movementDirs[1] = -1 * self.ball.movementDirs[1]
                 self.ball.movementDirs[0] = -1 * self.ball.movementDirs[0]
                 self.blocks.remove(block)
+                self.sounds[0].play()
                 ballDestrPos = (self.ball.rect.left, self.ball.rect.top)
                 self.createDust(ballDestrPos)
                 self.score += 1

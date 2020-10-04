@@ -1,7 +1,7 @@
 # BrickBreaker
 
 # Requirements ⁉
-✔pygame, pymongo (python packages)
+✔pygame, pymongo (python packages)<br>
 ✔MongoDB localy on your computer
 
 # TO DO:
@@ -19,6 +19,12 @@
 - [x] level information added when proceed to play another one
 - [x] added High Scores with MongoDB
 
- 
+ # Screen Shots
+
+ ![](images/GameScreen.jpg)
+ ![](images/MenuScreen.jpg)
+ ![](images/ScoreScreen.jpg)
+
+
  # Hidden rules 
  If you clear the level you will gain additional LP

@@ -75,7 +75,18 @@ class Database:
 
 db = Database()
 #db.clear()
+#db.addScore("Gary", 100)
+#db.addScore("Gerul", 700)
 #db.addScore("Jozek", 100)
+#db.addScore("Jan", 250)
+#db.addScore("Bace", 400)
+#db.addScore("Jozek", 110)
+#db.addScore("Gary", 140)
+#db.addScore("Jozek", 300)
+#db.addScore("Jozek", 900)
+#db.addScore("Jozek", 320)
+
+
 #db.update()
 temp =  db.loopfor10()
 pprint.pprint(temp)

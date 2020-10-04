@@ -4,6 +4,7 @@ from classes.gui.button import Button
 from classes.game.game import Game
 from classes.effects.dust import Dust
 from classes.db.database import Database
+pygame.mixer.init()
 
 class Menu:
     def __init__(self):
@@ -17,6 +18,7 @@ class Menu:
         self.font = pygame.font.SysFont("arial", 60)
         self.infoFont = pygame.font.SysFont("comicsans", 30)
         self.dust = []
+        pygame.mixer.music.load("music/bg_music.mp3")
 
     # Creating Menu buttons
     def setUp(self):
@@ -53,8 +55,11 @@ class Menu:
     # method to call in main()
     def drawMenu(self):
         self.setUp()
+        
         while self.run:
             self.clock.tick(FPS)
+            if pygame.mixer.music.get_busy() == False:
+                pygame.mixer.music.play()
             self.drawBg()
             self.tops()
             self.drawButtons()
