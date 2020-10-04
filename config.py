@@ -21,7 +21,7 @@ BTN_OFFSET = 20
 
 # Tops labels
 MENU_LABEL = "Brick Breaker Game"  
-CREDITS_LABEL = "Credits"
+HIGHSCORE_LABEL = "High Scores"
 CONTROLS_LABEL = "Controls"
 
 # Text for pages

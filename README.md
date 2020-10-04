@@ -1,5 +1,9 @@
 # BrickBreaker
 
+# Requirements ⁉
+✔pygame, pymongo (python packages)
+✔MongoDB localy on your computer
+
 # TO DO:
 - [x] Paddle movement either vertical & horizontal
 - [x] ball(and movement)
@@ -13,6 +17,7 @@
 - [x] Lives and actually losing game
 - [x] Blocks blow up when collide with ball
 - [x] level information added when proceed to play another one
+- [x] added High Scores with MongoDB
 
  
  # Hidden rules 

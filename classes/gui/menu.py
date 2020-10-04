@@ -3,6 +3,7 @@ from config import *
 from classes.gui.button import Button
 from classes.game.game import Game
 from classes.effects.dust import Dust
+from classes.db.database import Database
 
 class Menu:
     def __init__(self):
@@ -19,15 +20,17 @@ class Menu:
 
     # Creating Menu buttons
     def setUp(self):
+        self.db = Database()
+
         for y in range(0, 4):
             self.startButton = Button(int(WIDTH/2) - int(BTN_WIDTH/2), int(HEIGHT*100/400) + 0 * (BTN_HEIGHT + BTN_OFFSET), BTN_WIDTH, BTN_HEIGHT, GREEN, "START")
-            self.creditsButton = Button(int(WIDTH/2) - int(BTN_WIDTH/2), int(HEIGHT*100/400) + 1 * (BTN_HEIGHT + BTN_OFFSET), BTN_WIDTH, BTN_HEIGHT, GREEN, "Credits")
-            self.controlsButton = Button(int(WIDTH/2) - int(BTN_WIDTH/2), int(HEIGHT*100/400) + 2 * (BTN_HEIGHT + BTN_OFFSET), BTN_WIDTH, BTN_HEIGHT, GREEN, "Controls")
+            self.controlsButton = Button(int(WIDTH/2) - int(BTN_WIDTH/2), int(HEIGHT*100/400) + 1 * (BTN_HEIGHT + BTN_OFFSET), BTN_WIDTH, BTN_HEIGHT, GREEN, "Controls")
+            self.highscoreButton = Button(int(WIDTH/2) - int(BTN_WIDTH/2), int(HEIGHT*100/400) + 2 * (BTN_HEIGHT + BTN_OFFSET), BTN_WIDTH, BTN_HEIGHT, GREEN, "Scores")
             self.quitButton = Button(int(WIDTH/2) - int(BTN_WIDTH/2), int(HEIGHT*100/400) + 3 * (BTN_HEIGHT + BTN_OFFSET), BTN_WIDTH, BTN_HEIGHT, GREEN, "QUIT")
 
         self.buttons.append(self.startButton)
         self.buttons.append(self.quitButton)
-        self.buttons.append(self.creditsButton)
+        self.buttons.append(self.highscoreButton)
         self.buttons.append(self.controlsButton)
 
 
@@ -86,8 +89,8 @@ class Menu:
                 if self.quitButton.isOver(pos):
                     self.run = False
 
-                if self.creditsButton.isOver(pos):
-                    self.credits()
+                if self.highscoreButton.isOver(pos):
+                    self.highScores()
             
                 if self.controlsButton.isOver(pos):
                     self.controlsPage()
@@ -108,7 +111,7 @@ class Menu:
             self.drawBg()
             self.drawContorlsTops()
             self.drawControlsPageContent()
-            self.creditsControl()       # "don't repeat yourself"
+            self.highScoresControl()       # "don't repeat yourself"
             pygame.display.update()
 
 
@@ -123,26 +126,50 @@ class Menu:
         self.screen.blit(infoBar2, (int(WIDTH/2) - int(infoBar2.get_width()/2) - 50, int(HEIGHT*150/400)) )
         
     
-    """Credits"""
-    # Credits Menu Options
-    def credits(self):
+    """HighScores"""
+    # Highscores Menu Options
+    def highScores(self):
         while self.run:
             self.clock.tick(FPS)
             self.drawBg()
-            self.drawCreditsTops()
-            self.creditsControl()
+            self.drawHighScoresTops()
+            self.createHighScores()
+            self.drawHighScores()
+            self.highScoresControl()
             pygame.display.update()
     
-    # Credits Tops
-    def drawCreditsTops(self):
-        self.creditsTops = self.font.render(CREDITS_LABEL, 1, BLACK)
-        self.screen.blit(self.creditsTops, (int(WIDTH/2) - int(self.topsLabel.get_width()/2) - 10, 10) )
+    # highscores Tops
+    def drawHighScoresTops(self):
+        self.highScorestops = self.font.render(HIGHSCORE_LABEL, 1, BLACK)
+        self.screen.blit(self.highScorestops, (int(WIDTH/2) - int(self.highScorestops.get_width()/2) - 10, 10) )
 
-    # contorls for Credits option
-    def creditsControl(self):
+    # contorls for highscores option
+    def highScoresControl(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.drawMenu()
+
+    def createHighScores(self):
+        self.db.update()
+        highscores = self.db.loopfor10()
+        self.texts = []
+        for info in highscores:
+            print(info["pName"], info["score"])
+            text = info["pName"] + " scored" + ":   " + str(info["score"])
+            self.texts.append(text)
+        
+    def drawHighScores(self):
+        counter = 1
+        infoStr = "PLAYER       SCORE"
+        line = self.infoFont.render(infoStr, 1, BLACK)
+        self.screen.blit(line, (int(WIDTH/2) - int(line.get_width()/2) - 50, int(HEIGHT*80/400) ))
+
+        for text in self.texts:
+            line = self.infoFont.render(text, 1, BLACK)
+            self.screen.blit(line, (int(WIDTH/2) - int(line.get_width()/2) - 50, int(HEIGHT*100/400 + 25 * counter) ))
+            counter+= 1
+    
+
 
     def drawDust(self):
         for d in self.dust:
